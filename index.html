@@ -1,0 +1,211 @@
+<html ng-app="countryApp">
+  <head>
+    <meta charset="utf-8">
+    <title>FastTrackCBD</title>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
+    <!-- Bootstrap core css-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="footer.css">
+
+    <script>
+      var countryApp = angular.module('countryApp', []);
+      countryApp.controller('CountryCtrl', function ($scope, $http, $filter){
+      var destroyUrl = 'scheduleDestroy.php';
+      var adjustUrl = 'adjust.php';
+      //TO IMPLEMENT WITH LOGIN
+      var sessionid = "81f95029b17658838a1102ea39242e29ca91e4c3c918209bb231cefe2c86a30aa78379579413436f4079d959770dc3ac5ca2b16f8650370df0e8319cbd3d85ee"; 
+      $scope.loadInv = function(){
+          console.log("won'tyouwork");
+          $http.post('2proxyserver.php').success(function(data) {
+          // Here is where I have access to $scope for my table. 
+          // I need to get my internal datamodel completely set up here.
+          $scope.orderByField = 'sessiontime';
+          $scope.reverseSort = true;
+          $scope.inventory = data.inventory;
+          $scope.setSelected = function(){
+              $scope.selected = $filter('filter')($scope.inventory,$scope.search);
+              $scope.numRows = $scope.selected.length;
+          } // to do: make an action class
+            //currentid = search.id;
+
+          
+          $scope.scheduleDestruction = function (){
+              var selectedIDs = "[";
+              $scope.selected.map(function(item){
+                    console.log(item.id);
+                    selectedIDs += "\"" + item.id + "\"\,";
+                    //console.log($scope.search);
+              });
+              selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
+              selectedIDs += "]";
+              var destroyReason = "Seeds";
+              var action = "inventory_destroy_schedule"
+              // to do: add reason input
+              var scheduleDestroyObject = {
+                    "id" : selectedIDs,
+                    "action" : action,
+                    "reason" : destroyReason,
+                    "session" : sessionid
+              }
+              $scope.performAction(destroyUrl, scheduleDestroyObject);
+        }
+        $scope.destroy= function(){
+              var selectedIDs = "[";
+              $scope.selected.map(function(item){
+                    console.log(item.id);
+                    selectedIDs += "\"" + item.id + "\"\,";
+                    //console.log($scope.search);
+              });
+              selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
+              selectedIDs += "]";
+              var action = "inventory_destroy";
+              // to do: add reason input
+              var destroyObject = {
+                    "id" : selectedIDs,
+                    "action" : action,
+                    "session" : sessionid
+              }
+              $scope.performAction(destroyUrl, destroyObject);
+        }
+        $scope.adjustQuantity = function(newQ){
+           //loop through selected IDs and send them through adjust.php 
+              var action = "inventory_adjust";
+              var reason = "drying"; // NEEDS TO BE USER INPUT
+              console.log($scope.newQ);
+              // to do: add reason input
+              $scope.selected.map(function(item){
+                var destroyObject = {
+                    "id" : item.id,
+                    "action" : action,
+                    "session" : sessionid,
+                    "reason" : reason,
+                    "quantity" : $scope.newQ
+                }
+              $scope.performAction(adjustUrl, destroyObject);
+              });
+        }
+        $scope.performAction = function(url, dataObject){
+              $http({
+                method: 'POST',
+                url: url,
+                data : dataObject,
+                datatype : 'json',
+
+              }).success(function(res){
+                    console.log(res);
+                    if(res.success === 1){
+                        // reload data!!
+                        $scope.actionStatus = "Success! " + $scope.selected.length +" item(s) affected." 
+                        $scope.loadInv();
+                        //$scope.search = res.query;
+                    }
+                    if(res.success === 0){
+                        $scope.actionStatus = "Error! "+ res.error;
+                    }
+              });
+          }
+          // Create columns here
+          $scope.inventory.map( function(item){
+            // Combination Usable and Remaining weight column
+              if(item.usable_weight === item.remaining_quantity){
+                item.weight = item.remaining_quantity;
+              }
+              else{
+                item.weight = "(" + item.usable_weight + ") -> " + item.remaining_quantity;
+              }
+            // Last Modified Column
+              item.modtime = new Date (item.sessiontime * 1000).toLocaleString();
+
+              // Desc Column
+              switch(item.inventorytype){
+                case 27:
+                    item.desc = "Waste (NS)";
+                    if(item.inventorystatus === 1){
+                        item.desc = "Waste (S)";
+                    
+                        if(item.inventorystatustime < Date.now() / 1000){
+                            item.desc = "Waste (S*)";
+                        }
+                    }// todo  
+                      // add another conditional to determine
+                      // whether scheduled waste is ready for deletion.
+                    break;
+                case 6:
+                    item.desc = "Flower";
+                    break;
+                case 7:
+                    item.desc = "Clone";
+                    break;
+                case 9:
+                    item.desc = "Other Plant Material";
+                    break;
+                case 10:
+                    item.desc = "Seed";
+                    break;
+                case 12:
+                    item.desc = "Mature Plant";
+                    break;
+                case 13:
+                    item.desc = "Flower Lot";
+                    break;
+                case 14:
+                    item.desc = "Other Plant Material Lot";
+                    break;
+                default:
+                    item.desc = "";
+                    break;
+            } // End Desc Column
+              // todo: add cases for the rest of the codes
+          });
+        });
+        }
+        $scope.loadInv();
+      });
+    </script>
+  </head>
+  <body ng-controller="CountryCtrl">
+    <div class = "constainer">
+    <table class = "table">
+      <tr>
+        <th><a hfref="#" ng-click="orderByField='strain'; reverseSort=!reverseSort">Strain <span ng-show="orderByField == 'strain'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+        
+        <th><a hfref="#" ng-click="orderByField='sessiontime'; reverseSort=!reverseSort">Last<br/>Modified <span ng-show="orderByField == 'sessiontime'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+        
+        <th><a hfref="#" ng-click="orderByField='remaining_quantity'; reverseSort=!reverseSort">Weight (g) <span ng-show="orderByField == 'remaining_quantity'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+        <th><a hfref="#" ng-click="orderByField='desc'; reverseSort=!reverseSort">Description<span ng-show="orderByField == 'desc'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+        <th><a hfref="#" ng-click="orderByField='id'; reverseSort=!reverseSort">ID<span ng-show="orderByField == 'id'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+      </tr>
+
+      <tr>
+        <th><input name = "filter" ng-model="search.strain"></th>
+        <th><input ng-model="search.modtime"></th>
+        <th><input ng-model="search.remaining_quantity"></th>
+        <th><input ng-model="search.desc"></th>
+        <th><input ng-model="search.id" value="currentid"></th>
+      </tr>
+
+      <tr ng-repeat="item in inventory|orderBy:[orderByField,'strain','desc','strain','sessiontime']:reverseSort|filter:search" ng-click="setSelected();">
+        <td>{{item.strain}}</td>
+        <td>{{item.modtime}}</td>
+        <td>{{item.weight}}</td>
+        <td>{{item.desc}}</td>
+        <td>{{item.id}}</td>
+      </tr>
+    </table>
+    </div>
+   
+    <div id = "footer"><br/>
+    <table>
+        <tr>
+            <td><a href = "#" ng-click="scheduleDestruction();">Schedule {{numRows}} Items For Destruction</a></td>
+            <td><a href = "#" ng-click="destroy();">Destroy {{numRows}} Items</a></td>
+            <td><a href = "#" ng-click="adjustQuantity();">Adjust Weight of {{numRows}} Items</a><br/><input name = "adjust" ng-model="newQ"></td>
+        </tr>
+        <tr>{{actionStatus}}</tr>
+    </table>
+    </div>
+    </div>
+  </body>
+</html>
+
