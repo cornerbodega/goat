@@ -16,8 +16,7 @@
       //TO IMPLEMENT WITH LOGIN
       var sessionid = "81f95029b17658838a1102ea39242e29ca91e4c3c918209bb231cefe2c86a30aa78379579413436f4079d959770dc3ac5ca2b16f8650370df0e8319cbd3d85ee"; 
       $scope.loadInv = function(){
-          console.log("won'tyouwork");
-          $http.post('2proxyserver.php').success(function(data) {
+          $http.post('proxyserver.php').success(function(data) {
           // Here is where I have access to $scope for my table. 
           // I need to get my internal datamodel completely set up here.
           $scope.orderByField = 'sessiontime';
