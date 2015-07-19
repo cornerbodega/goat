@@ -1,0 +1,7 @@
+[19-Jul-2015 03:55:49 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home3/merhone/public_html/fast502/goat/login.php on line 6
+[19-Jul-2015 03:56:04 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home3/merhone/public_html/fast502/goat/login.php on line 6
+[19-Jul-2015 03:56:14 America/Chicago] PHP Fatal error:  Using $this when not in object context in /home3/merhone/public_html/fast502/goat/login.php on line 6
+[19-Jul-2015 06:28:37 America/Chicago] PHP Parse error:  syntax error, unexpected '$session' (T_VARIABLE), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/get_inventory.php on line 30
+[19-Jul-2015 06:28:37 America/Chicago] PHP Parse error:  syntax error, unexpected '$session' (T_VARIABLE), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/get_inventory.php on line 30
+[19-Jul-2015 06:29:01 America/Chicago] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/get_inventory.php on line 31
+[19-Jul-2015 06:29:02 America/Chicago] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/get_inventory.php on line 31
