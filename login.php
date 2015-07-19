@@ -56,6 +56,7 @@ if ($err) {
   //echo $response;
 }
 $_SESSION ["session"] = $session;
+#$_SESSION ["email"] = $email;
 $url = "inventory.html";
 header( "Location: $url" );
 

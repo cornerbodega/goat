@@ -5,3 +5,5 @@
 [19-Jul-2015 06:28:37 America/Chicago] PHP Parse error:  syntax error, unexpected '$session' (T_VARIABLE), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/get_inventory.php on line 30
 [19-Jul-2015 06:29:01 America/Chicago] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/get_inventory.php on line 31
 [19-Jul-2015 06:29:02 America/Chicago] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/get_inventory.php on line 31
+[19-Jul-2015 07:56:30 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/merhone/public_html/fast502/goat/login.php:56) in /home3/merhone/public_html/fast502/goat/login.php on line 61
+[19-Jul-2015 07:56:59 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/merhone/public_html/fast502/goat/login.php:56) in /home3/merhone/public_html/fast502/goat/login.php on line 61

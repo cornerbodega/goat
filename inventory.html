@@ -6,7 +6,7 @@
     <!-- Bootstrap core css-->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/footer.css">-->
     <link rel="stylesheet" type="text/css" href="css/sidebar.css">
     <script>
       //<?php echo 'var session = "'.json_encode($_SESSION['session']).'";' ?>;
@@ -16,6 +16,7 @@
       // doesnt work
       $http.get('get_session.php').success(function(data){ 
         $scope.session = data.session;
+        $scope.email = data.email;
         if (!$scope.session){
             "No session. How do I fail gracefully?";
         } else{
@@ -24,12 +25,12 @@
        // $scope.loadInv();
       var destroyUrl = 'scheduleDestroy.php';
       var adjustUrl = 'adjust.php';
+      var MAX_BATCH = 100;
       //TO IMPLEMENT WITH LOGIN
       //$scope.loadInv = function(){
         function loadInv() {
       var sessionid = $scope.session;
         var invObject = { "session" : $scope.session};
-      console.log(sessionid);
             $http({
                 method: 'POST',
                 url: "get_inventory.php",
@@ -37,33 +38,53 @@
                 datatype : 'json',
 
               }).success(function(res){
-                console.log(res.inventory);
-                console.log(sessionid);
                 $scope.orderByField = 'sessiontime';
                 $scope.reverseSort = true;
                 $scope.inventory = res.inventory;
-                console.log($scope.inventory);
                 $scope.setSelected = function(){
+                    if ($scope.selected) {
+                    $scope.selected.length = 0;
+                    }
                     $scope.selected = $filter('filter')($scope.inventory,$scope.search);
-                    $scope.numRows = $scope.selected.length;
+                    if (searchEmpty()){
+                        $scope.selected.length = 0;
+                    }
+                    //$scope.numRows = $scope.selected.length;
+                    $scope.numRows = $scope.selected.length === 0 ? "" : $scope.selected.length;
+                   console.log("numrows  " + $scope.numRows);
               }
          
+                function searchEmpty(){
+                console.log($scope.search);
+                    if (typeof $scope.search === "undefined"){
+                        return true;
+                    }
+                    else if ($scope.selected.length > MAX_BATCH){
+                        $scope.actionStatus = "Please select fewer than " + MAX_BATCH + " items to edit at once. (For safety)" ;
+                        return true;
+                    }
+                    return false;
+     
+                }
          //$http.post('proxyserver.php').success(function(data) {
           // Here is where I have access to $scope for my table. 
           // I need to get my internal datamodel completely set up here.
          // } // to do: make an action class
             //currentid = search.id;
 
-          
-          $scope.scheduleDestruction = function (){
+          $scope.formatSelectedArray = function(){
+              if ($scope.selected){ 
               var selectedIDs = "[";
               $scope.selected.map(function(item){
-                    console.log(item.id);
                     selectedIDs += "\"" + item.id + "\"\,";
-                    //console.log($scope.search);
               });
               selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
               selectedIDs += "]";
+              return selectedIDs;
+              }
+          }
+          $scope.scheduleDestruction = function (){
+              var selectedIDs = $scope.formatSelectedArray();
               var destroyReason = "Seeds";
               var action = "inventory_destroy_schedule"
               // to do: add reason input
@@ -76,14 +97,7 @@
               $scope.performAction(destroyUrl, scheduleDestroyObject);
         }
         $scope.destroy= function(){
-              var selectedIDs = "[";
-              $scope.selected.map(function(item){
-                    console.log(item.id);
-                    selectedIDs += "\"" + item.id + "\"\,";
-                    //console.log($scope.search);
-              });
-              selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
-              selectedIDs += "]";
+              var selectedIDs = $scope.formatSelectedArray();
               var action = "inventory_destroy";
               // to do: add reason input
               var destroyObject = {
@@ -94,10 +108,10 @@
               $scope.performAction(destroyUrl, destroyObject);
         }
         $scope.adjustQuantity = function(newQ){
+          if(!searchEmpty() && $scope.newQ > 0){
            //loop through selected IDs and send them through adjust.php 
               var action = "inventory_adjust";
               var reason = "drying"; // NEEDS TO BE USER INPUT
-              console.log($scope.newQ);
               // to do: add reason input
               $scope.selected.map(function(item){
                 var destroyObject = {
@@ -109,8 +123,13 @@
                 }
               $scope.performAction(adjustUrl, destroyObject);
               });
+            }
         }
         $scope.performAction = function(url, dataObject){
+            console.log(searchEmpty());
+              if (searchEmpty() === true){
+                $scope.actionStatus = "Please enter at least one search term."
+              } else { 
               $http({
                 method: 'POST',
                 url: url,
@@ -118,7 +137,6 @@
                 datatype : 'json',
 
               }).success(function(res){
-                    console.log(res);
                     if(res.success === 1){
                         // reload data!!
                         $scope.actionStatus = "Success! " + $scope.selected.length +" item(s) affected." 
@@ -129,6 +147,7 @@
                         $scope.actionStatus = "Error! "+ res.error;
                     }
               });
+          }
           }
           // Create columns here
           $scope.inventory.map( function(item){
@@ -191,6 +210,7 @@
     </script>
   </head>
   <body>
+<div ng-controller = "InventoryController">
        <div id="wrapper">
 
         <!-- Sidebar -->
@@ -198,34 +218,32 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
-                        Start Bootstrap
+                    Inventory
                     </a>
                 </li>
                 <li>
-                    <a href="#">Dashboard</a>
+                    <a href="#" ng-click="scheduleDestruction();">Schedule {{numRows}} items For Destruction</a>
                 </li>
                 <li>
-                    <a href="#">Shortcuts</a>
+                    <a href="#" ng-click="destroy();">Destroy {{numRows}} items</a>
                 </li>
                 <li>
-                    <a href="#">Overview</a>
+                    <a href="#" ng-click="adjustQuantity();">Adjust Weight of {{numRows}} items</a>
                 </li>
-                <li>
-                    <a href="#">Events</a>
+                <li><input name = "adjust" ng-model="newQ">
                 </li>
                 <li>
                     <a href="#">About</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="#">{{actionStatus}}</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    {{email}}
                 </li>
             </ul>
         </div> 
         <div id="page-content-wrapper">
-<div ng-controller = "InventoryController">
     <div class = "container">
     <table class = "table">
       <tr>
@@ -239,14 +257,14 @@
       </tr>
 
       <tr>
-        <th><input name = "filter" ng-model="search.strain"></th>
-        <th><input ng-model="search.modtime"></th>
-        <th><input ng-model="search.remaining_quantity"></th>
-        <th><input ng-model="search.desc"></th>
-        <th><input ng-model="search.id" value="currentid"></th>
+        <th><input name = "filter" ng-model="search.strain" ng-change="setSelected();"></th>
+        <th><input ng-model="search.modtime" ng-change="setSelected();"></th>
+        <th><input ng-model="search.remaining_quantity" ng-change="setSelected();"></th>
+        <th><input ng-model="search.desc" ng-change="setSelected();"></th>
+        <th><input ng-model="search.id" value="currentid" ng-change="setSelected();"></th>
       </tr>
 
-      <tr ng-repeat="item in inventory|orderBy:[orderByField,'strain','desc','strain','sessiontime']:reverseSort|filter:search" ng-click="setSelected();">
+      <tr ng-repeat="item in inventory|orderBy:[orderByField,'strain','desc','strain','sessiontime']:reverseSort|filter:search" >
         <td>{{item.strain}}</td>
         <td>{{item.modtime}}</td>
         <td>{{item.weight}}</td>
@@ -256,16 +274,6 @@
     </table>
     </div>
    
-    <div id = "footer"><br/>
-    <table>
-        <tr>
-            <td><a href = "#" ng-click="scheduleDestruction();">Schedule {{numRows}} Items For Destruction</a></td>
-            <td><a href = "#" ng-click="destroy();">Destroy {{numRows}} Items</a></td>
-            <td><a href = "#" ng-click="adjustQuantity();">Adjust Weight of {{numRows}} Items</a><br/><input name = "adjust" ng-model="newQ"></td>
-        </tr>
-        <tr>{{actionStatus}}</tr>
-    </table>
-    </div>
     </div>
     </div>
     </div>
