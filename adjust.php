@@ -31,6 +31,6 @@ if ($err) {
   echo $response;
 }
 
-$file = 'log_adjust.txt';
+$file = 'adjust.log';
 file_put_contents($file,serialize($params)."\n", FILE_APPEND);
 #$file_put_contents($file,[$id, $reason, $action, $session, $quantity], FILE_APPEND);
