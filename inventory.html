@@ -3,81 +3,86 @@
 <head>
     <meta charset="utf-8">
     <title>Ancient Goat Genes</title>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
-    <!-- Bootstrap core css-->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
-    <!--<link rel="stylesheet" type="text/css" href="css/footer.css">-->
     <link rel="stylesheet" type="text/css" href="css/sidebar.css">
     <script>
-        //<?php echo 'var session = "'.json_encode($_SESSION['session']).'";' ?>;
         var countryApp = angular.module('countryApp', []);
-        countryApp.controller('InventoryController', function($scope, $http, $filter) {
+        countryApp.controller('InventoryController', function($scope, $http, $filter)
+        {
             // Validate user is logged in
-            // doesnt work
-            $http.get('get_session.php').success(function(data) {
+            $http.get('get_session.php').success(function(data)
+            {
                 $scope.session = data.session;
                 $scope.email = data.email;
-                if (!$scope.session) {
+                if (!$scope.session)
+                {
                     "No session. How do I fail gracefully?";
-                } else {
+                } else
+                {
                     loadInv();
                 }
-                // $scope.loadInv();
                 var destroyUrl = 'scheduleDestroy.php';
                 var adjustUrl = 'adjust.php';
                 var MAX_BATCH = 100;
-                //TO IMPLEMENT WITH LOGIN
-                //$scope.loadInv = function(){
-                function loadInv() {
+                
+                // Load Inventory
+                function loadInv()
+                {
                     var sessionid = $scope.session;
-                    var invObject = {
+                    var invObject =
+                    {
                         "session": $scope.session
                     };
-                    $http({
+                    $http(
+                    {
                         method: 'POST',
                         url: "get_inventory.php",
                         data: invObject,
                         datatype: 'json',
 
-                    }).success(function(res) {
+                    }).success(function(res)
+                    {
                         $scope.orderByField = 'sessiontime';
                         $scope.reverseSort = true;
                         $scope.inventory = res.inventory;
-                        $scope.setSelected = function() {
-                            if ($scope.selected) {
+                        $scope.setSelected = function()
+                        {
+                            if ($scope.selected)
+                            {
                                 $scope.selected.length = 0;
                             }
                             $scope.selected = $filter('filter')($scope.inventory, $scope.search);
-                            if (searchEmpty()) {
+                            if (searchEmpty())
+                            {
                                 $scope.selected.length = 0;
                             }
-                            //$scope.numRows = $scope.selected.length;
                             $scope.numRows = $scope.selected.length === 0 ? "" : $scope.selected.length;
                             console.log("numrows  " + $scope.numRows);
                         }
 
-                        function searchEmpty() {
+                        function searchEmpty()
+                        {
                             console.log($scope.search);
-                            if (typeof $scope.search === "undefined") {
+                            if (typeof $scope.search === "undefined")
+                            {
                                 return true;
-                            } else if ($scope.selected.length > MAX_BATCH) {
+                            } else if ($scope.selected.length > MAX_BATCH)
+                            {
                                 $scope.actionStatus = "Please select fewer than " + MAX_BATCH + " items to edit at once. (For safety)";
                                 return true;
                             }
                             return false;
 
                         }
-                        //$http.post('proxyserver.php').success(function(data) {
-                        // Here is where I have access to $scope for my table. 
-                        // I need to get my internal datamodel completely set up here.
-                        // } // to do: make an action class
-                        //currentid = search.id;
 
-                        $scope.formatSelectedArray = function() {
-                            if ($scope.selected) {
+                        $scope.formatSelectedArray = function()
+                        {
+                            if ($scope.selected)
+                            {
                                 var selectedIDs = "[";
-                                $scope.selected.map(function(item) {
+                                $scope.selected.map(function(item)
+                                {
                                     selectedIDs += "\"" + item.id + "\"\,";
                                 });
                                 selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
@@ -85,12 +90,14 @@
                                 return selectedIDs;
                             }
                         }
-                        $scope.scheduleDestruction = function() {
+                        $scope.scheduleDestruction = function() 
+                        {
                             var selectedIDs = $scope.formatSelectedArray();
                             var destroyReason = "Seeds";
-                            var action = "inventory_destroy_schedule"
-                                // to do: add reason input
-                            var scheduleDestroyObject = {
+                            var action = "inventory_destroy_schedule";
+                            // to do: add reason input
+                            var scheduleDestroyObject = 
+                            {
                                 "id": selectedIDs,
                                 "action": action,
                                 "reason": destroyReason,
@@ -98,7 +105,8 @@
                             }
                             $scope.performAction(destroyUrl, scheduleDestroyObject);
                         }
-                        $scope.destroy = function() {
+                        $scope.destroy = function()
+                        {
                             var selectedIDs = $scope.formatSelectedArray();
                             var action = "inventory_destroy";
                             // to do: add reason input
@@ -109,14 +117,17 @@
                             }
                             $scope.performAction(destroyUrl, destroyObject);
                         }
-                        $scope.adjustQuantity = function(newQ) {
-                            if (!searchEmpty() && $scope.newQ > 0) {
+                        $scope.adjustQuantity = function(newQ)
+                        {
+                            if (!searchEmpty() && $scope.newQ > 0)
+                            {
                                 //loop through selected IDs and send them through adjust.php 
                                 var action = "inventory_adjust";
-                                var reason = "drying"; // NEEDS TO BE USER INPUT
-                                // to do: add reason input
-                                $scope.selected.map(function(item) {
-                                    var destroyObject = {
+                                var reason = "drying"; // To do: NEEDS TO BE USER INPUT
+                                $scope.selected.map(function(item)
+                                {
+                                    var destroyObject = 
+                                    {
                                         "id": item.id,
                                         "action": action,
                                         "session": sessionid,
@@ -127,54 +138,64 @@
                                 });
                             }
                         }
-                        $scope.performAction = function(url, dataObject) {
+                        $scope.performAction = function(url, dataObject)
+                        {
                                 console.log(searchEmpty());
-                                if (searchEmpty() === true) {
+                                if (searchEmpty() === true)
+                                {
                                     $scope.actionStatus = "Please enter at least one search term."
-                                } else {
-                                    $http({
+                                }
+                                else 
+                                {
+                                    $http(
+                                    {
                                         method: 'POST',
                                         url: url,
                                         data: dataObject,
                                         datatype: 'json',
 
-                                    }).success(function(res) {
-                                        if (res.success === 1) {
-                                            // reload data!!
+                                    }).success(function(res)
+                                    {
+                                        if (res.success === 1)
+                                        {
                                             $scope.actionStatus = "Success! " + $scope.selected.length + " item(s) affected."
                                             loadInv();
-                                            //$scope.search = res.query;
                                         }
-                                        if (res.success === 0) {
+                                        if (res.success === 0)
+                                        {
                                             $scope.actionStatus = "Error! " + res.error;
                                         }
                                     });
                                 }
-                            }
+                         }
                             // Create columns here
-                        $scope.inventory.map(function(item) {
+                        $scope.inventory.map(function(item)
+                        {
                             // Combination Usable and Remaining weight column
-                            if (item.usable_weight === item.remaining_quantity) {
+                            if (item.usable_weight === item.remaining_quantity)
+                            {
                                 item.weight = item.remaining_quantity;
-                            } else {
+                            } else 
+                            {
                                 item.weight = "(" + item.usable_weight + ") -> " + item.remaining_quantity;
                             }
                             // Last Modified Column
                             item.modtime = new Date(item.sessiontime * 1000).toLocaleString();
 
                             // Desc Column
-                            switch (item.inventorytype) {
+                            switch (item.inventorytype)
+                            {
                                 case 27:
                                     item.desc = "Waste (NS)";
-                                    if (item.inventorystatus === 1) {
+                                    if (item.inventorystatus === 1)
+                                    {
                                         item.desc = "Waste (S)";
 
-                                        if (item.inventorystatustime < Date.now() / 1000) {
+                                        if (item.inventorystatustime < Date.now() / 1000)
+                                        {
                                             item.desc = "Waste (S*)";
                                         }
-                                    } // todo  
-                                    // add another conditional to determine
-                                    // whether scheduled waste is ready for deletion.
+                                    }   
                                     break;
                                 case 6:
                                     item.desc = "Flower";
@@ -205,7 +226,6 @@
                         });
                     });
                 }
-                // $scope.loadInv();
             });
         });
     </script>
