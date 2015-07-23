@@ -57,17 +57,20 @@
     margin: 0;
     padding: 0;
     list-style: none;
+
 }
 
 .sidebar-nav li {
     text-indent: 20px;
     line-height: 40px;
+
 }
 
 .sidebar-nav li a {
-    display: block;
+    display: inline;
     text-decoration: none;
     color: #999999;
+
 }
 
 .sidebar-nav li a:hover {

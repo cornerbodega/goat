@@ -10,8 +10,14 @@
         var countryApp = angular.module('countryApp', []);
         countryApp.controller('InventoryController', function($scope, $http, $filter)
         {
+            var php = {
+                "sessionURL" : "get_session.php",
+                "destroyURL" : "php/inventory/scheduleDestroy.php",
+                "adjustURL" : "php/inventory/adjust.php",
+                "getInventory" : "php/inventory/get_inventory.php"
+            }
             // Validate user is logged in
-            $http.get('get_session.php').success(function(data)
+            $http.get(php.sessionURL).success(function(data)
             {
                 $scope.session = data.session;
                 $scope.email = data.email;
@@ -22,8 +28,8 @@
                 {
                     loadInv();
                 }
-                var destroyUrl = 'scheduleDestroy.php';
-                var adjustUrl = 'adjust.php';
+                var destroyUrl = php.destroyURL;
+                var adjustUrl = php.adjustURL;
                 var MAX_BATCH = 100;
                 
                 // Load Inventory
@@ -37,7 +43,7 @@
                     $http(
                     {
                         method: 'POST',
-                        url: "get_inventory.php",
+                        url: php.getInventory,
                         data: invObject,
                         datatype: 'json',
 
@@ -174,10 +180,13 @@
                             // Combination Usable and Remaining weight column
                             if (item.usable_weight === item.remaining_quantity)
                             {
-                                item.weight = item.remaining_quantity;
+                                var rq = Math.round(item.remaining_quantity * 100)/100;
+                                item.weight = rq;
                             } else 
                             {
-                                item.weight = "(" + item.usable_weight + ") -> " + item.remaining_quantity;
+                                var rq = Math.round(item.remaining_quantity * 100)/100;
+                                var uw = Math.round(item.usable_weight * 100)/100;
+                                item.weight = "(" + uw + ") -> " + rq;
                             }
                             // Last Modified Column
                             item.modtime = new Date(item.sessiontime * 1000).toLocaleString();
@@ -239,10 +248,11 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand">
-                        <a href="#">
+                      <a href="#">Home</a>
+                   //<a href="#">
                     Inventory
-                    </a>
-                    </li>
+                </a>
+                </li>
                     <li>
                         <a href="#" ng-click="scheduleDestruction();">Schedule {{numRows}} items for destruction</a>
                     </li>
