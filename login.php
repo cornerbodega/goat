@@ -1,5 +1,6 @@
 <?php
 
+$passed = false;
 
     if(empty($_POST['email']))
     {
@@ -47,6 +48,11 @@ curl_setopt_array($curl, array(
 $response = curl_exec($curl);
 $err = curl_error($curl);
 $j = json_decode($response, true);
+if($j['success'] == "1") {
+    $passed = true;
+} else { 
+    echo "Login Failed";
+}
 $session = $j['sessionid'];
 $response = json_encode($j);
 curl_close($curl);
@@ -58,5 +64,6 @@ if ($err) {
 $_SESSION ["session"] = $session;
 #$_SESSION ["email"] = $email;
 $url = "inventory.html";
-header( "Location: $url" );
-
+if ($passed) {
+    header( "Location: $url" );
+}
