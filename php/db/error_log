@@ -1,0 +1,4 @@
+[23-Jul-2015 19:34:05 America/Chicago] PHP Catchable fatal error:  Object of class DateTime could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 13
+[23-Jul-2015 19:34:08 America/Chicago] PHP Catchable fatal error:  Object of class DateTime could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 13
+[23-Jul-2015 19:35:22 America/Chicago] PHP Catchable fatal error:  Object of class DateTime could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 13
+[23-Jul-2015 19:35:59 America/Chicago] PHP Catchable fatal error:  Object of class DateTime could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 13

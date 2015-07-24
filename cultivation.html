@@ -8,13 +8,13 @@
     <link rel="stylesheet" type="text/css" href="css/sidebar.css">
     <script>
         var countryApp = angular.module('countryApp', []);
-        countryApp.controller('InventoryController', function($scope, $http, $filter)
+        countryApp.controller('CultivationController', function($scope, $http, $filter)
         {
             var php = {
                 "sessionURL" : "get_session.php",
                 "destroyURL" : "php/inventory/scheduleDestroy.php",
                 "adjustURL" : "php/inventory/adjust.php",
-                "getInventory" : "php/inventory/get_inventory.php"
+                "getCultivation" : "php/cultivation/get_cultivation.php"
             }
             // Validate user is logged in
             $http.get(php.sessionURL).success(function(data)
@@ -43,7 +43,7 @@
                     $http(
                     {
                         method: 'POST',
-                        url: php.getInventory,
+                        url: php.getCultivation,
                         data: invObject,
                         datatype: 'json',
 
@@ -241,7 +241,7 @@
 </head>
 
 <body>
-    <div ng-controller="InventoryController">
+    <div ng-controller="CultivationController">
         <div id="wrapper">
 
             <!-- Sidebar -->

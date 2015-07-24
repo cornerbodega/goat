@@ -66,7 +66,8 @@ $_SESSION ["session"] = $session;
 $url = "inventory.html";
 if ($passed) {
 
-    $conn = new mysqli($host, $dbun, $dbpw, $sessions_db);
+   echo $host  . $sessions_db; 
+    $conn = new mysqli($host, $username, $password, $sessions_db);
 
     // Check connection
     if ($conn->connect_error) {
@@ -74,8 +75,8 @@ if ($passed) {
     } 
     echo "Connected successfully";
 
-    $sql = "INSERT INTO `".$sessions_tbl."` (`email`, `time`, `sessionid`)
-        VALUES ('".$email."', '".$date."', '".$session."');";
+    #$sql = "INSERT INTO ".$sessions_tbl." (email, time, sessionid)
+        #VALUES ('".$email."', '".$date."', '".$session."')";
 
     if ($conn->query($sql) === TRUE) {
         echo "New record created successfully";
