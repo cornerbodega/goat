@@ -2,3 +2,17 @@
 [23-Jul-2015 19:34:08 America/Chicago] PHP Catchable fatal error:  Object of class DateTime could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 13
 [23-Jul-2015 19:35:22 America/Chicago] PHP Catchable fatal error:  Object of class DateTime could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 13
 [23-Jul-2015 19:35:59 America/Chicago] PHP Catchable fatal error:  Object of class DateTime could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 13
+[25-Jul-2015 13:42:40 America/Chicago] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 5
+[25-Jul-2015 13:43:26 America/Chicago] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 5
+[25-Jul-2015 13:46:52 America/Chicago] PHP Parse error:  syntax error, unexpected '";' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 23
+[25-Jul-2015 13:46:54 America/Chicago] PHP Parse error:  syntax error, unexpected '";' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 23
+[25-Jul-2015 13:48:07 America/Chicago] PHP Parse error:  syntax error, unexpected '";' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 23
+[25-Jul-2015 13:48:24 America/Chicago] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 21
+[25-Jul-2015 13:48:55 America/Chicago] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 5
+[25-Jul-2015 14:09:48 America/Chicago] PHP Parse error:  syntax error, unexpected '" "' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 26
+[25-Jul-2015 14:10:00 America/Chicago] PHP Parse error:  syntax error, unexpected '".  "' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 26
+[25-Jul-2015 14:10:07 America/Chicago] PHP Parse error:  syntax error, unexpected '" . "' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 26
+[25-Jul-2015 14:13:33 America/Chicago] PHP Catchable fatal error:  Object of class mysqli_result could not be converted to string in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 14
+[25-Jul-2015 14:36:19 America/Chicago] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 25
+[25-Jul-2015 14:36:21 America/Chicago] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 25
+[25-Jul-2015 14:36:47 America/Chicago] PHP Parse error:  syntax error, unexpected '{' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 25

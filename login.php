@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include "php/db/database.php";
 $passed = false;
 
@@ -61,8 +62,7 @@ if ($err) {
 } else {
   //echo $response;
 }
-$_SESSION ["session"] = $session;
-#$_SESSION ["email"] = $email;
+setcookie("email", $email);
 $url = "inventory.html";
 if ($passed) {
 
@@ -75,7 +75,7 @@ if ($passed) {
     echo "Connected successfully";
 
     $sql = "INSERT INTO `".$sessions_tbl."` (`email`, `time`, `sessionid`)
-        VALUES ('".$email."', '".$date."', '".$session."');";
+        VALUES ('".$email."', '".$time."', '".$session."');";
 
     if ($conn->query($sql) === TRUE) {
         echo "New record created successfully";

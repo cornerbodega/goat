@@ -11,7 +11,7 @@
         countryApp.controller('InventoryController', function($scope, $http, $filter)
         {
             var php = {
-                "sessionURL" : "get_session.php",
+                "sessionURL" : "php/db/get_session.php",
                 "destroyURL" : "php/inventory/scheduleDestroy.php",
                 "adjustURL" : "php/inventory/adjust.php",
                 "getInventory" : "php/inventory/get_inventory.php"
@@ -19,7 +19,7 @@
             // Validate user is logged in
             $http.get(php.sessionURL).success(function(data)
             {
-                $scope.session = data.session;
+                $scope.session = data.sessionid;
                 $scope.email = data.email;
                 if (!$scope.session)
                 {
@@ -269,11 +269,12 @@
                     <a href="#">About</a>
                 </li>-->
                     <li class = "sidebar-actionStatus">
-
+                    <li>
                         <a href="#">{{actionStatus}}</a>
                     </li>
+                    </li>
                     <li>
-                        {{email}}
+                        {{email}} 
                     </li>
                 </ul>
             </div>
