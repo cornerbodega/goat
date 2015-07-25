@@ -6,6 +6,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="css/mystyle.css">
     <script>
         var countryApp = angular.module('countryApp', []);
         countryApp.controller('InventoryController', function($scope, $http, $filter)
@@ -248,10 +249,7 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand">
-                      <a href="home.html">Home</a>
-                   //<a href="#">
-                    Inventory
-                </a>
+                  <a href = "#">Inventory</a>
                 </li>
                     <li>
                         <a href="#" ng-click="scheduleDestruction();">Schedule {{numRows}} items for destruction</a>
@@ -268,7 +266,7 @@
                     <!--<li>
                     <a href="#">About</a>
                 </li>-->
-                    <li class = "sidebar-actionStatus">
+                    <li class = "sidebar-actionStatus"> <!-- todo: Put this somewhere else -->
                     <li>
                         <a href="#">{{actionStatus}}</a>
                     </li>
@@ -278,9 +276,20 @@
                     </li>
                 </ul>
             </div>
+            <!--<nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">Inventory</a></li>
+                    <li role="presentation"><a href="#">Rooms</a></li>
+                    <li role="presentation"><a href="#">Plants</a></li>
+                </ul>
+            </div>
+            </nav>-->
+                <div ng-include ="'navbar.html'"></div>
+                
             <div id="page-content-wrapper">
                 <div class="container">
-                    <table class="table">
+                  <table class="table">
                         <tr>
                             <th><a hfref="#" ng-click="orderByField='strain'; reverseSort=!reverseSort">Strain <span ng-show="orderByField == 'strain'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
 
@@ -293,19 +302,19 @@
 
                         <tr>
                             <th>
-                                <input name="filter" ng-model="search.strain" ng-change="setSelected();">
+                                <input class="invSearch" name="filter" ng-model="search.strain" ng-change="setSelected();">
                             </th>
                             <th>
-                                <input ng-model="search.modtime" ng-change="setSelected();">
+                                <input class="invSearch" ng-model="search.modtime" ng-change="setSelected();">
                             </th>
                             <th>
-                                <input ng-model="search.remaining_quantity" ng-change="setSelected();">
+                                <input class="invSearch" ng-model="search.remaining_quantity" ng-change="setSelected();">
                             </th>
                             <th>
-                                <input ng-model="search.desc" ng-change="setSelected();">
+                                <input class="invSearch" ng-model="search.desc" ng-change="setSelected();">
                             </th>
                             <th>
-                                <input ng-model="search.id" value="currentid" ng-change="setSelected();">
+                                <input class="invSearch" ng-model="search.id" value="currentid" ng-change="setSelected();">
                             </th>
                         </tr>
 
