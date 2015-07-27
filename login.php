@@ -63,7 +63,7 @@ if ($err) {
   //echo $response;
 }
 setcookie("email", $email);
-$url = "app.html";
+$url = "app.html/inventory";
 if ($passed) {
 
     $conn = new mysqli($host, $dbun, $dbpw, $sessions_db);
