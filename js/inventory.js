@@ -28,7 +28,7 @@ countryApp.controller('InventoryController', function($scope, $http, $filter) {
         function loadSearch(){
             if (getCookie("search")){
                 //console.log(getCookie("search"));
-                $scope.search = JSON.parse(getCookie("search"));
+                $scope.search = getCookie("search");
             }
         }
         function getCookie(cname) {
@@ -37,7 +37,7 @@ countryApp.controller('InventoryController', function($scope, $http, $filter) {
             for(var i=0; i<ca.length; i++) {
                 var c = ca[i];
                 while (c.charAt(0)==' ') c = c.substring(1);
-                if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+                if (c.indexOf(name) == 0) return JSON.parse(c.substring(name.length,c.length));
             }
             return "";
         }
@@ -67,7 +67,6 @@ countryApp.controller('InventoryController', function($scope, $http, $filter) {
                     $scope.numRows = $scope.selected.length === 0 ? "" : $scope.selected.length;
                     console.log("numrows  " + $scope.numRows);
                     saveSearch();
-                    $scope.inventoryRCoptions = function(item){return [["Hey!", function($itemScope){console.log($itemScope.item.desc);}]]};
                     
                 }
 
@@ -77,7 +76,7 @@ countryApp.controller('InventoryController', function($scope, $http, $filter) {
                     if (typeof $scope.search === "undefined") {
                         return true;
                     } else if ($scope.selected.length > MAX_BATCH) {
-                        $scope.actionStatus = "Please select fewer than " + MAX_BATCH + " items to edit at once. (For safety)";
+                        $scope.fewerMsg = "Please select fewer than " + MAX_BATCH + " items to edit. (For Safety!)";
                         return true;
                     }
                     return false;

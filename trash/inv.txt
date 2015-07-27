@@ -1,0 +1,336 @@
+<html ng-app="countryApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Ancient Goat Genes</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="css/mystyle.css">
+    <script>
+        var countryApp = angular.module('countryApp', []);
+        countryApp.controller('InventoryController', function($scope, $http, $filter)
+        {
+            var php = {
+                "sessionURL" : "php/db/get_session.php",
+                "destroyURL" : "php/inventory/scheduleDestroy.php",
+                "adjustURL" : "php/inventory/adjust.php",
+                "getInventory" : "php/inventory/get_inventory.php"
+            }
+            // Validate user is logged in
+            $http.get(php.sessionURL).success(function(data)
+            {
+                $scope.session = data.sessionid;
+                $scope.email = data.email;
+                if (!$scope.session)
+                {
+                    "No session. How do I fail gracefully?";
+                } else
+                {
+                    loadInv();
+                }
+                var destroyUrl = php.destroyURL;
+                var adjustUrl = php.adjustURL;
+                var MAX_BATCH = 100;
+                
+                // Load Inventory
+                function loadInv()
+                {
+                    var sessionid = $scope.session;
+                    var invObject =
+                    {
+                        "session": $scope.session
+                    };
+                    $http(
+                    {
+                        method: 'POST',
+                        url: php.getInventory,
+                        data: invObject,
+                        datatype: 'json',
+
+                    }).success(function(res)
+                    {
+                        $scope.orderByField = 'sessiontime';
+                        $scope.reverseSort = true;
+                        $scope.inventory = res.inventory;
+                        $scope.setSelected = function()
+                        {
+                            if ($scope.selected)
+                            {
+                                $scope.selected.length = 0;
+                            }
+                            $scope.selected = $filter('filter')($scope.inventory, $scope.search);
+                            if (searchEmpty())
+                            {
+                                $scope.selected.length = 0;
+                            }
+                            $scope.numRows = $scope.selected.length === 0 ? "" : $scope.selected.length;
+                            console.log("numrows  " + $scope.numRows);
+                        }
+
+                        function searchEmpty()
+                        {
+                            console.log($scope.search);
+                            if (typeof $scope.search === "undefined")
+                            {
+                                return true;
+                            } else if ($scope.selected.length > MAX_BATCH)
+                            {
+                                $scope.actionStatus = "Please select fewer than " + MAX_BATCH + " items to edit at once. (For safety)";
+                                return true;
+                            }
+                            return false;
+
+                        }
+
+                        $scope.formatSelectedArray = function()
+                        {
+                            if ($scope.selected)
+                            {
+                                var selectedIDs = "[";
+                                $scope.selected.map(function(item)
+                                {
+                                    selectedIDs += "\"" + item.id + "\"\,";
+                                });
+                                selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
+                                selectedIDs += "]";
+                                return selectedIDs;
+                            }
+                        }
+                        $scope.scheduleDestruction = function() 
+                        {
+                            var selectedIDs = $scope.formatSelectedArray();
+                            var destroyReason = "Seeds";
+                            var action = "inventory_destroy_schedule";
+                            // to do: add reason input
+                            var scheduleDestroyObject = 
+                            {
+                                "id": selectedIDs,
+                                "action": action,
+                                "reason": destroyReason,
+                                "session": sessionid
+                            }
+                            $scope.performAction(destroyUrl, scheduleDestroyObject);
+                        }
+                        $scope.destroy = function()
+                        {
+                            var selectedIDs = $scope.formatSelectedArray();
+                            var action = "inventory_destroy";
+                            // to do: add reason input
+                            var destroyObject = {
+                                "id": selectedIDs,
+                                "action": action,
+                                "session": sessionid
+                            }
+                            $scope.performAction(destroyUrl, destroyObject);
+                        }
+                        $scope.adjustQuantity = function(newQ)
+                        {
+                            if (!searchEmpty() && $scope.newQ > 0)
+                            {
+                                //loop through selected IDs and send them through adjust.php 
+                                var action = "inventory_adjust";
+                                var reason = "drying"; // To do: NEEDS TO BE USER INPUT
+                                $scope.selected.map(function(item)
+                                {
+                                    var destroyObject = 
+                                    {
+                                        "id": item.id,
+                                        "action": action,
+                                        "session": sessionid,
+                                        "reason": reason,
+                                        "quantity": $scope.newQ
+                                    }
+                                    $scope.performAction(adjustUrl, destroyObject);
+                                });
+                            }
+                        }
+                        $scope.performAction = function(url, dataObject)
+                        {
+                                console.log(searchEmpty());
+                                if (searchEmpty() === true)
+                                {
+                                    $scope.actionStatus = "Please enter at least one search term."
+                                }
+                                else 
+                                {
+                                    $http(
+                                    {
+                                        method: 'POST',
+                                        url: url,
+                                        data: dataObject,
+                                        datatype: 'json',
+
+                                    }).success(function(res)
+                                    {
+                                        if (res.success === 1)
+                                        {
+                                            $scope.actionStatus = "Success! " + $scope.selected.length + " item(s) affected."
+                                            loadInv();
+                                        }
+                                        if (res.success === 0)
+                                        {
+                                            $scope.actionStatus = "Error! " + res.error;
+                                        }
+                                    });
+                                }
+                         }
+                            // Create columns here
+                        $scope.inventory.map(function(item)
+                        {
+                            // Combination Usable and Remaining weight column
+                            if (item.usable_weight === item.remaining_quantity)
+                            {
+                                var rq = Math.round(item.remaining_quantity * 100)/100;
+                                item.weight = rq;
+                            } else 
+                            {
+                                var rq = Math.round(item.remaining_quantity * 100)/100;
+                                var uw = Math.round(item.usable_weight * 100)/100;
+                                item.weight = "(" + uw + ") -> " + rq;
+                            }
+                            // Last Modified Column
+                            item.modtime = new Date(item.sessiontime * 1000).toLocaleString();
+
+                            // Desc Column
+                            switch (item.inventorytype)
+                            {
+                                case 27:
+                                    item.desc = "Waste (NS)";
+                                    if (item.inventorystatus === 1)
+                                    {
+                                        item.desc = "Waste (S)";
+
+                                        if (item.inventorystatustime < Date.now() / 1000)
+                                        {
+                                            item.desc = "Waste (S*)";
+                                        }
+                                    }   
+                                    break;
+                                case 6:
+                                    item.desc = "Flower";
+                                    break;
+                                case 7:
+                                    item.desc = "Clone";
+                                    break;
+                                case 9:
+                                    item.desc = "Other Plant Material";
+                                    break;
+                                case 10:
+                                    item.desc = "Seed";
+                                    break;
+                                case 12:
+                                    item.desc = "Mature Plant";
+                                    break;
+                                case 13:
+                                    item.desc = "Flower Lot";
+                                    break;
+                                case 14:
+                                    item.desc = "Other Plant Material Lot";
+                                    break;
+                                default:
+                                    item.desc = "";
+                                    break;
+                            } // End Desc Column
+                            // todo: add cases for the rest of the codes
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div ng-controller="InventoryController">
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                  <a href = "#">Inventory</a>
+                </li>
+                    <li>
+                        <a href="#" ng-click="scheduleDestruction();">Schedule {{numRows}} items for destruction</a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="destroy();">Destroy {{numRows}} items</a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="adjustQuantity();">Adjust weight of {{numRows}} items</a>
+                    </li>
+                    <li>
+                        <input name="adjust" ng-model="newQ">
+                    </li>
+                    <!--<li>
+                    <a href="#">About</a>
+                </li>-->
+                    <li class = "sidebar-actionStatus"> <!-- todo: Put this somewhere else -->
+                    <li>
+                        <a href="#">{{actionStatus}}</a>
+                    </li>
+                    </li>
+                    <li>
+                        {{email}} 
+                    </li>
+                </ul>
+            </div>
+            <!--<nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">Inventory</a></li>
+                    <li role="presentation"><a href="#">Rooms</a></li>
+                    <li role="presentation"><a href="#">Plants</a></li>
+                </ul>
+            </div>
+            </nav>-->
+                <div ng-include ="'navbar.html'"></div>
+                
+            <div id="page-content-wrapper">
+                <div class="container">
+                  <table class="table">
+                        <tr>
+                            <th><a hfref="#" ng-click="orderByField='strain'; reverseSort=!reverseSort">Strain <span ng-show="orderByField == 'strain'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+
+                            <th><a hfref="#" ng-click="orderByField='sessiontime'; reverseSort=!reverseSort">Last<br/>Modified <span ng-show="orderByField == 'sessiontime'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+
+                            <th><a hfref="#" ng-click="orderByField='remaining_quantity'; reverseSort=!reverseSort">Weight (g) <span ng-show="orderByField == 'remaining_quantity'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                            <th><a hfref="#" ng-click="orderByField='desc'; reverseSort=!reverseSort">Description<span ng-show="orderByField == 'desc'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                            <th><a hfref="#" ng-click="orderByField='id'; reverseSort=!reverseSort">ID<span ng-show="orderByField == 'id'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                <input class="invSearch" name="filter" ng-model="search.strain" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.modtime" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.remaining_quantity" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.desc" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.id" value="currentid" ng-change="setSelected();">
+                            </th>
+                        </tr>
+
+                        <tr ng-repeat="item in inventory|orderBy:[orderByField,'strain','desc','strain','sessiontime']:reverseSort|filter:search">
+                            <td>{{item.strain}}</td>
+                            <td>{{item.modtime}}</td>
+                            <td>{{item.weight}}</td>
+                            <td>{{item.desc}}</td>
+                            <td>{{item.id}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

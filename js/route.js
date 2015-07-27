@@ -9,8 +9,8 @@ countryApp.config(function($routeProvider) {
 
         // route for the home page
         .when('/', {
-templateUrl : 'pages/inventory.html',
-controller  : 'InventoryController'
+templateUrl : 'pages/home.html',
+controller  : 'HomeController'
 })
 
         // route for the contact page

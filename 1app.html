@@ -1,0 +1,56 @@
+<!-- index.html -->
+<!DOCTYPE html>
+    <html ng-app="countryApp">
+    <head>
+        <!-- SCROLLS -->
+        <!-- load bootstrap and fontawesome via CDN -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- SPELLS -->
+        <!-- load angular and angular route via CDN -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+        <script src="js/route.js"></script>
+        <script src="js/inventory.js"></script>
+        <!--<script src="js/rc.js"></script>-->
+        <!-- <link rel="stylesheet" type="text/css" href="css/sidebar.css"> -->
+        <link rel="stylesheet" type="text/css" href="css/mystyle.css">
+    </head>
+    <body>
+        <!-- HEADER AND NAVBAR -->
+        <header>
+        <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">potnet.net</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#inventory"><i class="fa fa-database"></i> Inventory</a></li>
+                <li><a href="#about"><i class="fa fa-bed"></i> Rooms</a></li>
+                <li><a href="#contact"><i class="fa fa-tree"></i> Plants</a></li>
+                <li><a href="#contact"><i class="fa fa-random"></i> Strains</a></li>
+                <li><a href="#contact"><i class="fa fa-users"></i> Employees</a></li>
+                <li><a href="#contact"><i class="fa fa-car"></i> Vehicles</a></li>
+                <li><a href="#contact"><i class="fa fa-tag"></i> Vendors</a></li>
+                <li><a href="#contact"><i class="fa fa-question-circle"></i> Help</a></li>
+                <li><a href="#contact"><i class="fa fa-cogs"></i> Account</a></li>
+            </ul>
+        </div>
+        </nav>
+        </header>
+
+        <!-- MAIN CONTENT AND INJECTED VIEWS -->
+        <div id="main">
+            <!-- angular templating -->
+            <!-- this is where content will be injected -->
+        
+        <br/>
+        <br/>
+        <br/>
+        <div ng-view></div>
+        </div>
+
+    </body>
+</html>
+
