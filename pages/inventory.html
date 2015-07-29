@@ -1,74 +1,95 @@
 <div ><!-- IMPLEMENT CONTEXT MENU!!!! -->
 
-        <!-- Sidebar 
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">Inventory</a>
+    <!-- Sidebar  -->
+    <div class="container">
+        <div class = "navbar navbar-default navbar-fixed-left">
+            <ul class="nav navbar-nav navbar"> 
+                <li>
+                <!--<a ng-click="inputOn = !inputOn;">Adjust weight of {{numRows}} items</a>-->
+                <a ng-click="inputRequest()"><i class = "fa fa-wrench"></i> Adjust Weight</a>
+                </li>
+
+                <li>
+                <a ng-click="scheduleDestruction();"><i class="fa fa-clock-o"></i> Schedule Destruction</a>
                 </li>
                 <li>
-                    <a href="#" ng-click="scheduleDestruction();">Schedule {{numRows}} items for destruction</a>
+                <a ng-click="destroy();"><i class="fa fa-recycle"></i> Destroy</a>
                 </li>
-                <li>
-                    <a href="#" ng-click="destroy();">Destroy {{numRows}} items</a>
-                </li>
-                <li>
-                    <a href="#" ng-click="adjustQuantity();">Adjust weight of {{numRows}} items</a>
-                </li>
-                <li>
-                    <input name="adjust" ng-model="newQ">
-                </li>
-                <li class="sidebar-actionStatus">
-                    <li>
-                        <a href="#">{{actionStatus}}</a>
-                    </li>
-                </li>
-                <li>
-                    {{email}}
-                </li>
+                <!--  <li>
+                {{email}}
+                </li> -->
             </ul>
-        </div> -->
+        </div>
+        <!-- Input Context Menu-->
+        <div id="wrapper">
+            <div ng-show = "inputOn" class = "navbar navbar-default navbar-fixed-left">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                            <a><label>New Amount (in grams): </label>
+                                <input name="adjust" ng-model="newQ" placeholder = " new weight"> 
+                            </a>
+                </li>
+                <li>
+                            <a><label>Reason for Weight Change: </label>
+                                <input name="adjust" ng-model="reason" placeholder = " reason"> 
+                            </a>
+                </li>
+                <li class = "active">
+                        <a ng-click="adjustQuantity();"><i class = "fa fa-thumbs-up"></i> Submit</a>
+                </li>
+            </div>
+            </div>
+        <!-- Action Status Context Menu-->
+        <div ng-show = "actionStatus"> 
+            <div class = "navbar navbar-inverse navbar-fixed-left">
+                <ul class="nav navbar-nav navbar"> 
+                    <li>
+                    <a>{{actionStatus}}</a>
 
-    <div id="wrapper">
-        <div id="page-content-wrapper">
-            <div class="container">
-                <table class="table">
-                    <tr>
-                        <th><a hfref="#" ng-click="orderByField='strain'; reverseSort=!reverseSort">Strain <span ng-show="orderByField == 'strain'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                </li>
+                </ul>
+            </div>
+        </div>
+            <div id="page-content-wrapper">
+                <div class = "table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th><a hfref="#" ng-click="orderByField='strain'; reverseSort=!reverseSort">Strain <span ng-show="orderByField == 'strain'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
 
-                        <th><a hfref="#" ng-click="orderByField='sessiontime'; reverseSort=!reverseSort">Modified <span ng-show="orderByField == 'sessiontime'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                            <th><a hfref="#" ng-click="orderByField='sessiontime'; reverseSort=!reverseSort">Modified <span ng-show="orderByField == 'sessiontime'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
 
-                        <th><a hfref="#" ng-click="orderByField='remaining_quantity'; reverseSort=!reverseSort">Weight (g) <span ng-show="orderByField == 'remaining_quantity'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
-                        <th><a hfref="#" ng-click="orderByField='desc'; reverseSort=!reverseSort">Description<span ng-show="orderByField == 'desc'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
-                        <th><a hfref="#" ng-click="orderByField='id'; reverseSort=!reverseSort">ID<span ng-show="orderByField == 'id'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
-                    </tr>
+                            <th><a hfref="#" ng-click="orderByField='remaining_quantity'; reverseSort=!reverseSort">Weight (g) <span ng-show="orderByField == 'remaining_quantity'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                            <th><a hfref="#" ng-click="orderByField='desc'; reverseSort=!reverseSort">Description<span ng-show="orderByField == 'desc'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                            <th><a hfref="#" ng-click="orderByField='id'; reverseSort=!reverseSort">ID<span ng-show="orderByField == 'id'"><span ng-show="!reverseSort">[^]</span><span ng-show="reverseSort">[v]</span></span></a></th>
+                        </tr>
 
-                    <tr>
-                        <th>
-                            <input class="invSearch" name="filter" ng-model="search.strain" ng-change="setSelected();">
-                        </th>
-                        <th>
-                            <input class="invSearch" ng-model="search.modtime" ng-change="setSelected();">
-                        </th>
-                        <th>
-                            <input class="invSearch" ng-model="search.remaining_quantity" ng-change="setSelected();">
-                        </th>
-                        <th>
-                            <input class="invSearch" ng-model="search.desc" ng-change="setSelected();">
-                        </th>
-                        <th>
-                            <input class="invSearch" ng-model="search.id" value="currentid" ng-change="setSelected();">
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                <input class="invSearch" name="filter" ng-model="search.strain" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.modtime" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.remaining_quantity" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.desc" ng-change="setSelected();">
+                            </th>
+                            <th>
+                                <input class="invSearch" ng-model="search.id" value="currentid" ng-change="setSelected();">
+                            </th>
+                        </tr>
 
-                    <tr ng-repeat="item in inventory|orderBy:[orderByField,'strain','desc','strain','sessiontime']:reverseSort|filter:search">
-                        <td>{{item.strain}}</td>
-                        <td>{{item.modtime}}</td>
-                        <td>{{item.weight}}</td>
-                        <td>{{item.desc}}</td>
-                        <td>{{item.id}}</td>
-                    </tr>
-                </table>
+                        <tr ng-repeat="item in inventory|orderBy:[orderByField,'strain','desc','strain','sessiontime']:reverseSort|filter:search">
+                            <td>{{item.strain}}</td>
+                            <td>{{item.modtime}}</td>
+                            <td>{{item.weight}}</td>
+                            <td>{{item.desc}}</td>
+                            <td>{{item.id}}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
         </div>
