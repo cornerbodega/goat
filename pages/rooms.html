@@ -1,0 +1,100 @@
+<div ><!-- IMPLEMENT CONTEXT MENU!!!! -->
+
+    <!-- Sidebar  -->
+    <div class="container">
+        <div class = "navbar navbar-default navbar-fixed-left">
+            <ul class="nav navbar-nav navbar">
+                <li>
+                    <a ng-click="scheduleDestruction();"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Contents</a>
+                </li> 
+                <li>
+                    <a ng-click="toggleInputMenu('add');"><i class = "fa fa-plus-square-o"></i>&nbsp;&nbsp;Add Room</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('modify');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Modify Room</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('remove');"><i class="fa fa-times"></i>&nbsp;&nbsp;Remove Room</a>
+                </li>
+                <!--  <li>
+                {{email}}
+                </li> -->
+            </ul>
+        </div>
+
+        <div id="wrapper">
+            <!-- Modify Room Input Context Menu-->
+            <div ng-show = "showModifyRoomInput" class = "navbar navbar-default navbar-fixed-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                    <a><label>New Room Name:&nbsp;&nbsp;&nbsp; </label>
+                        <input ng-model="newRoomName" placeholder = " new room name"> 
+                    </a>
+                    </li>
+                    
+                    <li class = "active">
+                    <a ng-click="modifyRoom();"><i class = "fa fa-thumbs-up"></i> Submit</a>
+                    </li>
+            </div>
+            
+            <!-- Remove Room Input Context Menu-->
+            <div ng-show = "showRemoveRoomInput" class = "navbar navbar-default navbar-fixed-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                    <a><label>Are you sure you want to remove {{selected.name}}?</label>
+                    </a>
+                    </li>
+                    
+                    <li class = "active">
+                    <a ng-click="removeRoom();"><i class = "fa fa-thumbs-up"></i> Yes</a>
+                    </li>
+            </div>
+
+            <!-- Add Room Input Context Menu-->
+            <div ng-show = "showAddRoomInput" class = "navbar navbar-default navbar-fixed-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                    <a><label>New Room Name:&nbsp;&nbsp;&nbsp; </label>
+                        <input ng-model="newRoomName" placeholder = " new room name"> 
+                    </a>
+                    </li>
+                    <li>
+                    <a><label>Room Type:&nbsp;&nbsp;&nbsp;</label>
+                        <select ng-model="newRoomType"><option value = "inventoryRoom">Inventory Room</option><option value = "plantRoom">Plant Room</option></select> 
+                    </a>
+                    </li>
+                    <li class = "active">
+                    <a ng-click="addRoom();"><i class = "fa fa-thumbs-up"></i> Submit</a>
+                    </li>
+            </div>
+        
+            <!-- Action Status Context Menu-->
+            <div ng-show = "actionStatus"> 
+                <div class = "navbar navbar-inverse navbar-fixed-left">
+                    <ul class="nav navbar-nav navbar"> 
+                        <li>
+                        <a>{{actionStatus}}</a>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="page-content-wrapper">
+                <div class = "table-responsive">
+                    <table class="table">
+                    <a>Plant Rooms</a>
+                        <tr ng-class ="selected === room ? 'warning' : 'table'" ng-repeat="room in plantRooms" ng-click = "setSelected(room)">
+                            <td>{{room.name}}</td>
+                        </tr>
+                    </table>
+                    <table class="table">
+                       <a> Inventory Rooms</a>
+                        <tr ng-class ="selected === room ? 'warning' : 'table'" ng-repeat="room in inventoryRooms" ng-click = "setSelected(room)">
+                            <td>{{room.name}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

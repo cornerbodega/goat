@@ -6,14 +6,15 @@
          <meta charset="UTF-8">
         <!-- load bootstrap and fontawesome via CDN -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <!-- load angular and angular route via CDN -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+        <!-- potnet js files -->
         <script src="js/route.js"></script>
+        <script src="js/api.js"></script>
+        <script src="js/rooms.js"></script>
         <script src="js/inventory.js"></script>
-        <script src="js/contextMenu.js"></script>
-        <!-- <link rel="stylesheet" type="text/css" href="css/sidebar.css"> -->
         <link rel="stylesheet" type="text/css" href="css/mystyle.css">
     </head>
     <body>
@@ -22,14 +23,14 @@
         <nav class="navbar navbar-default navbar-fixed-left">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">potnet.net</a>
+                <a class="navbar-brand" href="#"><i class = "fa fa-hand-peace-o"></i> potnet.net </a>  <p class = "navbar-text">"High CBD Traceability"</p>
             </div>
 
             <ul class="nav nav-tabs nav-justified">
 
             <!--<ul class="nav navbar-nav navbar-right"> -->
                 <li><a href="#inventory"><i class="fa fa-database"></i> Inventory</a></li>
-                <li><a href="#about"><i class="fa fa-bed"></i> Rooms</a></li>
+                <li><a href="#rooms"><i class="fa fa-bed"></i> Rooms</a></li>
                 <li><a href="#contact"><i class="fa fa-tree"></i> Plants</a></li>
                 <li><a href="#contact"><i class="fa fa-random"></i> Strains</a></li>
                 <li><a href="#contact"><i class="fa fa-users"></i> Employees</a></li>
@@ -40,12 +41,6 @@
             </ul>
         </nav>
         </header>
-        <!-- CONTEXT INPUT MENU
-        <h1 slide-toggle = "#contextInputMenu">Don't make it look too easy</h1>
-        <div id = "contextInputMenu" class = "slideable">
-            <p>Let's Goooooooo</p>
-        </div>
-        </div>-->
         <!-- MAIN CONTENT AND INJECTED VIEWS -->
         <div id="main">
             <!-- angular templating -->

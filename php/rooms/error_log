@@ -1,0 +1,3 @@
+[29-Jul-2015 23:29:17 America/Chicago] PHP Parse error:  syntax error, unexpected '$reuqestJSON' (T_VARIABLE) in /home3/merhone/public_html/fast502/goat/php/rooms/rooms.php on line 7
+[29-Jul-2015 23:30:04 America/Chicago] PHP Parse error:  syntax error, unexpected '$reuqestJSON' (T_VARIABLE) in /home3/merhone/public_html/fast502/goat/php/rooms/rooms.php on line 7
+[29-Jul-2015 23:40:38 America/Chicago] PHP Warning:  json_decode() expects parameter 1 to be string, array given in /home3/merhone/public_html/fast502/goat/php/rooms/rooms.php on line 6

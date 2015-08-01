@@ -1,12 +1,13 @@
+"use strict";
 countryApp.controller('InventoryController', function($scope, $http, $filter) {
     $scope.inputOn = false;
     $scope.actionStatus = false;
     var php = {
-            "sessionURL": "php/db/get_session.php",
-            "destroyURL": "php/inventory/scheduleDestroy.php",
-            "adjustURL": "php/inventory/adjust.php",
-            "getInventory": "php/inventory/get_inventory.php"
-        }
+            sessionURL: "php/db/get_session.php",
+            destroyURL: "php/inventory/scheduleDestroy.php",
+            adjustURL: "php/inventory/adjust.php",
+            getInventory: "php/inventory/get_inventory.php"
+        };
         // Validate user is logged in
         console.log("init!!!!!!");
     $http.get(php.sessionURL).success(function(data) {
