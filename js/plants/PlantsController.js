@@ -60,18 +60,7 @@ countryApp.controller('PlantsController', ['$scope', '$http', '$filter', 'PlantS
             cf.post(rq.roomObject(scope.session), function(plantRoomResponse) {
                 scope.plantRooms = removeDeleted(plantRoomResponse.plant_room);
                 arrangePlants();
-                // scope.roomNameMap.forEach(function(room){
-                //     scope.plants.map(function(plant){
-                    
-                //         if (parseInt(plant.room) === parseInt(room.id)){
-                //             plant.roomName = room.name;
-                //             //room.plants.push(plant);
-                //         };
-                //         
-                //     });
 
-                // });
-                // console.log(scope.roomNameMap);
                 // cf.post(rq.derivative(scope.session), function(plantDerivativeResponse) {
                 //     scope.plantDerivative = removeDeleted(plantDerivativeResponse.plant_derivative);
                 //     //scope.plants.indexOf(scope.plantRooms.room);
@@ -87,6 +76,9 @@ countryApp.controller('PlantsController', ['$scope', '$http', '$filter', 'PlantS
         }); // end plant
     }; // end loadPlants
 
+
+    // Put each plant in the plants array of the object
+    // representing the room it's in. This is for the accordion
     function arrangePlants(){
         scope.plantRooms.map(function(room){
             scope.roomNameMap.push({
@@ -99,16 +91,27 @@ countryApp.controller('PlantsController', ['$scope', '$http', '$filter', 'PlantS
             scope.plants.forEach(function(plant){
                 if (parseInt(plant.room) === parseInt(room.id)){
                     //console.log("match");
+                    plant.stateName = getStateName(plant.state);
+                    plant.time = getTime(plant.sessiontime);
                     room.plants.push(plant);
                    // console.log(room.plants);
                 };
             });
-        console.log(scope.roomNameMap[0].plants[0].strain);
         });
-
-
     }
-
+    function getStateName(num){
+        switch (num){
+            case 0 :
+                return "Growing";
+            case 1: 
+                return "Curing"
+            case 2: 
+                return "Fully Cured"
+        }
+    }
+    function getTime(time){
+        return new Date(time * 1000).toLocaleString();
+    }
     // Single-row selection functionality
     scope.selected = false;
     scope.setSelected = function(plant){

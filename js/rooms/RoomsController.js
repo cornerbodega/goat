@@ -37,8 +37,8 @@ countryApp.controller('RoomsController', ['$scope', '$http', '$filter', '$q', 'R
         scope.session = sessionData.sessionid;
         scope.email = sessionData.email;
 
-        scope.location = sessionData.license;
-        console.log("Sessiondata " + sessionData);
+        scope.loc = sessionData.license;
+        console.log("Sessiondata " + scope.loc);
         loadRooms();
     }); // end cf.session
     // Get Room List
@@ -169,10 +169,13 @@ countryApp.controller('RoomsController', ['$scope', '$http', '$filter', '$q', 'R
                 }
                 // API Call and Room View Refresh
                 cf.post(roomObj, function(newRoomResponse) { // api call
-                    scope.actionStatus = "Success! " + scope.newRoomName + " has been added."
+                    if (newRoomResponse.success === 1){
+                        scope.actionStatus = "Success! " + scope.newRoomName + " has been added."
+                        loadRooms(); // refresh view
+
+                    }
                     // turn off context menu
                    // scope.showAddRoomInput = false;
-                    loadRooms(); // refresh view
                 });
             } // end if newroomType == undefined
             else {

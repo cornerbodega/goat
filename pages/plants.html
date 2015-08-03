@@ -108,31 +108,20 @@
             <div id="page-content-wrapper">
                 <accordion>
                     <accordion-group heading = {{room.name}} ng-repeat="room in roomNameMap">
-                    <table class="table">                       
-                    <tr ng-repeat = "plant in room.plants">
-                    <td>{{plant.strain}}</td>
-                    </tr>
-                    </table>
-                    </accordion-group>
-                </accordion>
-                <!-- <div class = "table-responsive">
-
                     <table class="table">
-                    <th>Strain</th>
-                    <th>State</th>
-                    <th>Room</th>
-                    <th>Harvest</th>
-                    <th>ID</th>
-
-                        <tr ng-class ="selected === plant ? 'warning' : 'table'" ng-repeat="plant in plants | orderBy:['room','strain']" ng-click = "setSelected(plant)">
+                        <th>Time</th>                       
+                        <th>Strain</th>
+                        <th>Status</th>
+                        <th>ID</th>
+                        <tr ng-repeat = "plant in room.plants | orderBy:['-sessiontime','strain','state']">
+                            <td>{{plant.time}}</td>
                             <td>{{plant.strain}}</td>
                             <td>{{plant.stateName}}</td>
-                            <td>{{plant.roomName}}</td>
-                            <td>{{plant.harvestscheduled}}</td>
                             <td>{{plant.id}}</td>
                         </tr>
                     </table>
-                </div> -->
+                    </accordion-group>
+                </accordion>
             </div>
         </div>
     </div>
