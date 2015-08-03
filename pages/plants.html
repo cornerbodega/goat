@@ -1,0 +1,139 @@
+<div ><!-- IMPLEMENT CONTEXT MENU!!!! -->
+
+    <!-- Sidebar  -->
+    <div class="container">
+        <div class = "navbar navbar-default navbar-fixed-left">
+            <ul class="nav navbar-nav navbar">
+                <li>
+                    <a ng-click="toggleInputMenu('filter');"><i class="fa fa-eye"></i>&nbsp;&nbsp;Filter</a>
+                </li> 
+                <li>
+                <li>
+                    <a ng-click="toggleInputMenu('add');"><i class="fa fa-eye"></i>&nbsp;&nbsp;Add</a>
+                </li> 
+                <li>
+                    <a ng-click="toggleInputMenu('move');"><i class = "fa fa-plus-square-o"></i>&nbsp;&nbsp;Move</a>
+                </li>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('modify');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Modify</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('scheduleHarvest');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Schedule Harvest</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('harvest');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Harvest</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('scheduleDestruction');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Schedule Destruction</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('destroy');"><i class="fa fa-times"></i>&nbsp;&nbsp;Destroy</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('waste');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Log Waste</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('cure');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Cure</a>
+                </li>
+                <li>
+                    <a ng-click="toggleInputMenu('inventory');"><i class="fa fa-magic"></i>&nbsp;&nbsp;To Inventory</a>
+                </li>
+
+                
+                <!--  <li>
+                {{email}}
+                </li> -->
+            </ul>
+        </div>
+
+        <div id="wrapper">
+            <!-- Modify Plant Input Context Menu-->
+            <div ng-show = "showModifyPlantInput" class = "navbar navbar-default navbar-fixed-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                    <a><label>Rename {{selected.name}}:&nbsp;&nbsp;&nbsp; </label>
+                        <input ng-model="newPlantName" placeholder = " new plant name"> 
+                    </a>
+                    </li>
+                    
+                    <li class = "active">
+                    <a ng-click="modifyPlant();"><i class = "fa fa-thumbs-up"></i> Submit</a>
+                    </li>
+            </div>
+            
+            <!-- Remove Plant Input Context Menu-->
+            <div ng-show = "showRemovePlantInput" class = "navbar navbar-default navbar-fixed-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                    <a><label>Are you sure you want to remove {{selected.name}}?</label>
+                    </a>
+                    </li>
+                    
+                    <li class = "active">
+                    <a ng-click="removePlant();"><i class = "fa fa-thumbs-up"></i> Yes</a>
+                    </li>
+            </div>
+
+            <!-- Add Plant Input Context Menu-->
+            <div ng-show = "showAddPlantInput" class = "navbar navbar-default navbar-fixed-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                    <a><label>New Plant Name:&nbsp;&nbsp;&nbsp; </label>
+                        <input ng-model="newPlantName" placeholder = " new plant name"> 
+                    </a>
+                    </li>
+                    <li>
+                    <a><label>Plant Type:&nbsp;&nbsp;&nbsp;</label>
+                        <select ng-model="newPlantType"><option value = "inventoryPlant">Inventory Plant</option><option value = "plantPlant">Plant</option></select> 
+                    </a>
+                    </li>
+                    <li class = "active">
+                    <a ng-click="addPlant();"><i class = "fa fa-thumbs-up"></i> Submit</a>
+                    </li>
+            </div>
+        
+            <!-- Action Status Context Menu-->
+            <div ng-show = "actionStatus"> 
+                <div class = "navbar navbar-inverse navbar-fixed-left">
+                    <ul class="nav navbar-nav navbar"> 
+                        <li>
+                        <a>{{actionStatus}}</a>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Plant Table -->
+            <div id="page-content-wrapper">
+                <accordion>
+                    <accordion-group heading = {{room.name}} ng-repeat="room in roomNameMap">
+                    <table class="table">                       
+                    <tr ng-repeat = "plant in room.plants">
+                    <td>{{plant.strain}}</td>
+                    </tr>
+                    </table>
+                    </accordion-group>
+                </accordion>
+                <!-- <div class = "table-responsive">
+
+                    <table class="table">
+                    <th>Strain</th>
+                    <th>State</th>
+                    <th>Room</th>
+                    <th>Harvest</th>
+                    <th>ID</th>
+
+                        <tr ng-class ="selected === plant ? 'warning' : 'table'" ng-repeat="plant in plants | orderBy:['room','strain']" ng-click = "setSelected(plant)">
+                            <td>{{plant.strain}}</td>
+                            <td>{{plant.stateName}}</td>
+                            <td>{{plant.roomName}}</td>
+                            <td>{{plant.harvestscheduled}}</td>
+                            <td>{{plant.id}}</td>
+                        </tr>
+                    </table>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>

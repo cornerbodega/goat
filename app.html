@@ -6,15 +6,24 @@
          <meta charset="UTF-8">
         <!-- load bootstrap and fontawesome via CDN -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="lib/angular-loading-bar/build/loading-bar.min.css" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
         <!-- load angular and angular route via CDN -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+        <script src="lib/ui-bootstrap-tpls-0.13.2.min.js"></script>
+        <script src="lib/angular-loading-bar/build/loading-bar.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-route.js"></script>
         <!-- potnet js files -->
         <script src="js/route.js"></script>
-        <script src="js/api.js"></script>
-        <script src="js/rooms.js"></script>
-        <script src="js/inventory.js"></script>
+        <script src="js/mothership/Mothership.js"></script>
+        <script src="js/rooms/RoomsController.js"></script>
+        <script src="js/rooms/RoomService.js"></script>
+        
+        <script src="js/inventory/inventory.js"></script>
+
+        <script src="js/plants/PlantsController.js"></script>
+        <script src="js/plants/PlantService.js"></script>
+
         <link rel="stylesheet" type="text/css" href="css/mystyle.css">
     </head>
     <body>
@@ -31,7 +40,7 @@
             <!--<ul class="nav navbar-nav navbar-right"> -->
                 <li><a href="#inventory"><i class="fa fa-database"></i> Inventory</a></li>
                 <li><a href="#rooms"><i class="fa fa-bed"></i> Rooms</a></li>
-                <li><a href="#contact"><i class="fa fa-tree"></i> Plants</a></li>
+                <li><a href="#plants"><i class="fa fa-tree"></i> Plants</a></li>
                 <li><a href="#contact"><i class="fa fa-random"></i> Strains</a></li>
                 <li><a href="#contact"><i class="fa fa-users"></i> Employees</a></li>
                 <li><a href="#contact"><i class="fa fa-car"></i> Vehicles</a></li>

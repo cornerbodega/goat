@@ -20,11 +20,16 @@ $passed = false;
         echo("Please enter ubi");
         return false;
     }
-     
+    if(empty($_POST['license']))
+    {
+        echo("Please Enter I-502 License Number");
+        return false;
+    }
+
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $ubi = trim($_POST['ubi']);
-     
+    $license = trim($_POST['license']);     
      
     session_start();
      
@@ -74,8 +79,8 @@ if ($passed) {
     } 
     echo "Connected successfully";
 
-    $sql = "INSERT INTO `".$sessions_tbl."` (`email`, `time`, `sessionid`)
-        VALUES ('".$email."', '".$time."', '".$session."');";
+    $sql = "INSERT INTO `".$sessions_tbl."` (`email`, `time`, `sessionid`,`license`)
+        VALUES ('".$email."', '".$time."', '".$session."', '".$license."');";
 
     if ($conn->query($sql) === TRUE) {
         echo "New record created successfully";

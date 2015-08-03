@@ -1,0 +1,50 @@
+<html ng-app="nameApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular.js Example</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <script>
+      var nameApp = angular.module('nameApp', []);
+      nameApp.controller('NameCtrl', function ($scope){
+        $scope.getShelfPrice = function() {
+            var rangeBottom = 6;
+            var rangeTop = 7.5;
+            
+
+            var feeTop = 2.5;
+            var feeMiddle = 1.87;
+            var feeBottom = 1.25;
+
+            if (feeBottom + parseFloat($scope.prodPrice) < rangeBottom){
+                console.log(feeBottom + parseFloat($scope.prodPrice));
+                $scope.fee = feeBottom;
+                
+            }
+            else if (feeMiddle + parseFloat($scope.prodPrice) < rangeTop){
+                $scope.fee = feeMiddle;
+            }
+            else{
+                $scope.fee = feeTop;
+            };
+            $scope.shelfPrice = $scope.fee + parseFloat($scope.prodPrice);
+            //var sum = +feeTop + +feeTop
+           // console.log("should be 5 " + sum );
+           $scope.shelfPriceDecimal = parseFloat($scope.shelfPrice);
+        };
+      });
+    </script>
+  </head>
+  <body ng-controller="NameCtrl">
+    Shelf Price:<input ng-model="shelfPrice" type="text"/>
+    <br>
+    <br>
+
+    Wholesale Price:<input ng-model="prodPrice" type="text"/>
+    <br>
+    <a href = '#' ng-click = 'getShelfPrice();'>Go</a>
+    <br>
+    Shelf Price 
+    {{shelfPriceDecimal}}<br>
+    Fee <br>{{fee}}
+  </body>
+</html>

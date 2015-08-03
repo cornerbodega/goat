@@ -11,7 +11,7 @@
                     <a ng-click="toggleInputMenu('add');"><i class = "fa fa-plus-square-o"></i>&nbsp;&nbsp;Add Room</a>
                 </li>
                 <li>
-                    <a ng-click="toggleInputMenu('modify');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Modify Room</a>
+                    <a ng-click="toggleInputMenu('modify');"><i class="fa fa-magic"></i>&nbsp;&nbsp;Rename Room</a>
                 </li>
                 <li>
                     <a ng-click="toggleInputMenu('remove');"><i class="fa fa-times"></i>&nbsp;&nbsp;Remove Room</a>
@@ -24,11 +24,11 @@
 
         <div id="wrapper">
             <!-- Modify Room Input Context Menu-->
-            <div ng-show = "showModifyRoomInput" class = "navbar navbar-default navbar-fixed-left">
+            <div collapse = "!showModifyRoomInput" class = "navbar navbar-default navbar-fixed-left">
                 <ul class="nav nav-pills nav-stacked">
                     <li>
-                    <a><label>New Room Name:&nbsp;&nbsp;&nbsp; </label>
-                        <input ng-model="newRoomName" placeholder = " new room name"> 
+                    <a><label>Rename {{selected.name}}:&nbsp;&nbsp;&nbsp; </label>
+                        <input ng-model="newModifyRoomName" placeholder = " new room name"> 
                     </a>
                     </li>
                     
@@ -38,7 +38,7 @@
             </div>
             
             <!-- Remove Room Input Context Menu-->
-            <div ng-show = "showRemoveRoomInput" class = "navbar navbar-default navbar-fixed-left">
+            <div collapse = "!showRemoveRoomInput" class = "navbar navbar-default navbar-fixed-left">
                 <ul class="nav nav-pills nav-stacked">
                     <li>
                     <a><label>Are you sure you want to remove {{selected.name}}?</label>
@@ -51,8 +51,17 @@
             </div>
 
             <!-- Add Room Input Context Menu-->
-            <div ng-show = "showAddRoomInput" class = "navbar navbar-default navbar-fixed-left">
-                <ul class="nav nav-pills nav-stacked">
+            <div collapse = "!showAddRoomInput" class = "navbar navbar-default navbar-fixed-left">
+                <div class="table-responsive">
+                    <table class = "table">
+                        <tr class = "active">Add Room</tr>
+                        <tr>
+                            <td>New Room Name:</td>
+                            <td><input ng-model="newRoomName" placeholder = " new room name"> </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- <ul class="nav nav-pills nav-stacked">
                     <li>
                     <a><label>New Room Name:&nbsp;&nbsp;&nbsp; </label>
                         <input ng-model="newRoomName" placeholder = " new room name"> 
@@ -65,35 +74,49 @@
                     </li>
                     <li class = "active">
                     <a ng-click="addRoom();"><i class = "fa fa-thumbs-up"></i> Submit</a>
-                    </li>
+                    </li> -->
             </div>
         
             <!-- Action Status Context Menu-->
-            <div ng-show = "actionStatus"> 
-                <div class = "navbar navbar-inverse navbar-fixed-left">
-                    <ul class="nav navbar-nav navbar"> 
-                        <li>
-                        <a>{{actionStatus}}</a>
-
-                        </li>
-                    </ul>
-                </div>
+            <div collapse = "!actionStatus"> 
+                        <alert>{{actionStatus}}</alert>
+               
             </div>
+
             <div id="page-content-wrapper">
-                <div class = "table-responsive">
+                <accordion>
+                    <accordion-group heading="Plant Rooms" >
+                        <table class="table">
+                            <tr ng-class = "selected === room ? 'warning' : 'accordion'" ng-repeat="room in plantRooms" ng-repeat="room in inventoryRooms" ng-click = "setSelected(room)">
+                            <!-- <i class="pull-left glyphicon " ng-class="{'warning': room == selected, '': room != selected }"></i> -->
+                                <td>{{room.name}}<td>
+                            </tr>
+                        </table>
+                    </accordion-group>
+
+                    <accordion-group heading="Inventory Rooms" >                   
+                        <table class="table">
+                            <tr ng-class ="selected === room ? 'warning' : 'accordion'" ng-repeat="room in inventoryRooms" ng-click = "setSelected(room)">
+                                <td>{{room.name}}</td>
+                            </tr>
+                        </table>
+                    </accordion-group>
+                </accordian>
+
+               <!--  <div class = "table-responsive">
                     <table class="table">
-                    <a>Plant Rooms</a>
+                    <h5>Plant Rooms</h5>
                         <tr ng-class ="selected === room ? 'warning' : 'table'" ng-repeat="room in plantRooms" ng-click = "setSelected(room)">
                             <td>{{room.name}}</td>
                         </tr>
                     </table>
                     <table class="table">
-                       <a> Inventory Rooms</a>
+                       <h5> Inventory Rooms</h5>
                         <tr ng-class ="selected === room ? 'warning' : 'table'" ng-repeat="room in inventoryRooms" ng-click = "setSelected(room)">
                             <td>{{room.name}}</td>
                         </tr>
                     </table>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

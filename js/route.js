@@ -2,7 +2,7 @@
 
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var countryApp = angular.module('countryApp', ['ngRoute']);
+var countryApp = angular.module('countryApp', ['ngRoute','ui.bootstrap','angular-loading-bar']);
 // configure our routes
 countryApp.config(function($routeProvider) {
     $routeProvider
@@ -20,8 +20,12 @@ countryApp.config(function($routeProvider) {
     .when('/rooms', {
         templateUrl : 'pages/rooms.html',
         controller  : 'RoomsController'
-    }).
-    otherwise({
+    })
+    .when('/plants', {
+        templateUrl : 'pages/plants.html',
+        controller  : 'PlantsController'
+    })
+    .otherwise({
         redirectTo: '/'
     });
 });
