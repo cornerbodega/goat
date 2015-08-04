@@ -27,7 +27,9 @@ if ($err) {
 } else {
   echo $response;
 }
-
+$j = json_decode($requestJSON, true);
+$j["time"] = time();
+$requestJSON = json_encode($j);
 $file = 'action.log';
 #file_put_contents($file,serialize($params)."\n", FILE_APPEND);
 file_put_contents($file,$requestJSON."\n", FILE_APPEND);

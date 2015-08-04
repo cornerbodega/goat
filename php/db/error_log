@@ -16,3 +16,9 @@
 [25-Jul-2015 14:36:19 America/Chicago] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 25
 [25-Jul-2015 14:36:21 America/Chicago] PHP Parse error:  syntax error, unexpected ':', expecting ']' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 25
 [25-Jul-2015 14:36:47 America/Chicago] PHP Parse error:  syntax error, unexpected '{' in /home3/merhone/public_html/fast502/goat/php/db/get_session.php on line 25
+[03-Aug-2015 20:49:01 America/Chicago] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home3/merhone/public_html/fast502/goat/php/db/action.php on line 8
+[03-Aug-2015 20:49:01 America/Chicago] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home3/merhone/public_html/fast502/goat/php/db/action.php on line 8
+[03-Aug-2015 20:49:23 America/Chicago] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home3/merhone/public_html/fast502/goat/php/db/action.php on line 32
+[03-Aug-2015 20:49:23 America/Chicago] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home3/merhone/public_html/fast502/goat/php/db/action.php on line 32
+[03-Aug-2015 20:49:39 America/Chicago] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home3/merhone/public_html/fast502/goat/php/db/action.php on line 32
+[03-Aug-2015 20:49:39 America/Chicago] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home3/merhone/public_html/fast502/goat/php/db/action.php on line 32

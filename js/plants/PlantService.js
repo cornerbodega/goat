@@ -2,6 +2,7 @@ countryApp.service('PlantService', function(){
     //var session = $http.get(php.sessionURL);
     this.plantObject = function(session)
     {
+        console.log(session);
         var obj = {
             API: api,
             action: "sync_plant",
@@ -17,8 +18,8 @@ countryApp.service('PlantService', function(){
             sessionid : session
         };
         return JSON.stringify(obj);
-    }
-    this.derivative = function(session) // id?    
+    };
+    this.plantDerivative = function(session) // id?    
     {
         var obj = {
             API: api,
@@ -26,6 +27,6 @@ countryApp.service('PlantService', function(){
             sessionid : session
         };
         return JSON.stringify(obj);
-    }
+    };
     // INCOMPLETE!!!
 });

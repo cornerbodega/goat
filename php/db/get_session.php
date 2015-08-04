@@ -3,7 +3,7 @@ ob_start();
 include "database.php";
 
 $email = $_COOKIE["email"];
-echo $email;
+//echo $email;
 $conn = new mysqli($host, $dbun, $dbpw, $sessions_db);
 // Check connection
 if ($conn->connect_error) {

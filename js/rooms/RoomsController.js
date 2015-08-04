@@ -3,6 +3,7 @@
 countryApp.controller('RoomsController', ['$scope', '$http', '$filter', '$q', 'RoomService', 'ConnectFactory', function(scope, http, filter, q, rq, cf) {
     //Input Booleans
     scope.toggleInputMenu = function(action){
+
         console.log(action);
         switch (action) {
             case 'add' :

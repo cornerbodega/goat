@@ -5,7 +5,7 @@
         <div class = "navbar navbar-default navbar-fixed-left">
             <ul class="nav navbar-nav navbar">
                 <li>
-                    <a ng-click="toggleInputMenu('filter');"><i class="fa fa-eye"></i>&nbsp;&nbsp;Filter</a>
+                    <a ng-click="toggleInputMenu('search');"><i class="fa fa-eye"></i>&nbsp;&nbsp;Search</a>
                 </li> 
                 <li>
                 <li>
@@ -48,18 +48,16 @@
         </div>
 
         <div id="wrapper">
-            <!-- Modify Plant Input Context Menu-->
-            <div ng-show = "showModifyPlantInput" class = "navbar navbar-default navbar-fixed-left">
-                <ul class="nav nav-pills nav-stacked">
-                    <li>
-                    <a><label>Rename {{selected.name}}:&nbsp;&nbsp;&nbsp; </label>
-                        <input ng-model="newPlantName" placeholder = " new plant name"> 
-                    </a>
-                    </li>
-                    
-                    <li class = "active">
-                    <a ng-click="modifyPlant();"><i class = "fa fa-thumbs-up"></i> Submit</a>
-                    </li>
+            <!-- Search Plant Input Context Menu-->
+            <div ng-show = "showSearch" class = "navbar navbar-default navbar-fixed-left">
+                <table class = "table">
+                    <tr>
+                        <td><h5><i class = "fa fa-plus-square-o"></i>&nbsp;&nbsp;Search Strain Name:</h5></td>
+<!--                        <td><input class = "form-control" ng-model="search.strain" placeholder = "  strain name"> </td>-->
+                       
+                   <td> <input type="text" ng-model="search.strain" placeholder = " strain name" typeahead="plant.strain for plant in plants | filter:$viewValue | limitTo:8" class="form-control"></td>
+                    </tr>
+                </table>
             </div>
             
             <!-- Remove Plant Input Context Menu-->
@@ -77,20 +75,43 @@
 
             <!-- Add Plant Input Context Menu-->
             <div ng-show = "showAddPlantInput" class = "navbar navbar-default navbar-fixed-left">
+                <table class = "table">
+                    <ul>
+                        <li>Add New Plant</li>
+                    </ul>
+                    <tr>
+                        <td><h5><i class = "fa fa-plus-square-o"></i>&nbsp;&nbsp;Strain?:</h5></td>
+                        <td><input class = "form-control" ng-model="newRoomName" placeholder = " new plant name"> </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5><i class = "fa fa-plus-square-o"></i>&nbsp;&nbsp;Where?:</h5>
+                        </td>
+                        <td>
+                            <!-- <select class = "form-control" ng-model="newPlantStrain"><option value = "inventoryRoom">Inventory Room</option><option value = "plantRoom">Plant Room</option></select>  -->
+                            <span dropdown on-toggle="toggled(open)">
+                                <a href id="simple-dropdown" dropdown-toggle>
+                                Click me for a dropdown
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                                    <li ng-repeat="room in roomView">
+                                        <a href>{{room.name}}</a>
+                                    </li>
+                                </ul>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+<!--                         <td>
+                            <select class = "form-control" ng-model="newPlantRoom"><option ng-repeat "room in rooms" value = "{{room.name}}">
+                        </td> -->
+                    </tr>
+                </table>
                 <ul class="nav nav-pills nav-stacked">
-                    <li>
-                    <a><label>New Plant Name:&nbsp;&nbsp;&nbsp; </label>
-                        <input ng-model="newPlantName" placeholder = " new plant name"> 
-                    </a>
-                    </li>
-                    <li>
-                    <a><label>Plant Type:&nbsp;&nbsp;&nbsp;</label>
-                        <select ng-model="newPlantType"><option value = "inventoryPlant">Inventory Plant</option><option value = "plantPlant">Plant</option></select> 
-                    </a>
-                    </li>
                     <li class = "active">
-                    <a ng-click="addPlant();"><i class = "fa fa-thumbs-up"></i> Submit</a>
+                        <a ng-click="addRoom();"><i class = "fa fa-thumbs-up"></i> Submit</a>
                     </li>
+                </ul>
             </div>
         
             <!-- Action Status Context Menu-->
@@ -106,22 +127,23 @@
             </div>
             <!-- Plant Table -->
             <div id="page-content-wrapper">
-                <accordion>
-                    <accordion-group heading = {{room.name}} ng-repeat="room in roomNameMap">
-                    <table class="table">
-                        <th>Time</th>                       
-                        <th>Strain</th>
-                        <th>Status</th>
-                        <th>ID</th>
-                        <tr ng-repeat = "plant in room.plants | orderBy:['-sessiontime','strain','state']">
-                            <td>{{plant.time}}</td>
-                            <td>{{plant.strain}}</td>
-                            <td>{{plant.stateName}}</td>
-                            <td>{{plant.id}}</td>
-                        </tr>
-                    </table>
+                <accordion close-others="false">
+                    <accordion-group heading = {{room.name}} ng-repeat="room in roomView">
+                                <table class="table">
+                                    <tr ng-repeat = "plant in room.plants | orderBy:['-sessiontime','strain','state']| filter:search">
+                                        <td>{{plant.strain}}</td>
+                                        <td>{{plant.stateName}}</td>
+                                        <td>{{plant.id}}</td>
+                                    </tr>
+                                </table>
+
+<!--                                <tr ng-show = "plant.showDeriv"><td>{{plant.deriv}} kkkpiyhhioi</td></tr>-->
+
+
+                        </table>
                     </accordion-group>
                 </accordion>
+                <br />
             </div>
         </div>
     </div>

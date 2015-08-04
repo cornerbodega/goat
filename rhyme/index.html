@@ -1,0 +1,52 @@
+<html ng-app="mb">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular.js Example</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <script>
+      var mb = angular.module('mb', []);
+      mb.controller('MBCtrl', ['$scope', '$http', function (scope, http){
+        scope.lines = [];
+        http.get('mb.json').success(function(data) {
+          data.PLAY.ACT.forEach(function(act){
+            act.SCENE.forEach(function(scene){
+              scene.SPEECH.forEach(function(speech){
+                if (speech.LINE instanceof Array){
+                  speech.LINE.forEach(function(part){
+                   //scope.lines.push(part);
+                   // UNCOMMENT WHEN READY FOR THE BIG TIME
+                  })
+                } // end multipart line
+                else if (typeof speech.LINE === "string"){
+                  scope.lines.push(speech.LINE);
+                } // end single part line
+              }); // end speech
+            }); // end scene
+          }); // end act
+          console.log(scope.lines.length);
+          scope.lines.map(function(line){
+              line.arp = getArp(line);
+              console.log(line.arp)
+          });
+
+
+        });// end http
+        function getArp(line){
+          return "line";
+        }
+      }]); // end controller
+    </script>
+  </head>
+  <body ng-controller="MBCtrl">
+    <table>
+      <tr>
+        <th>Country</th>
+        <th>Population</th>
+      </tr>
+      <tr ng-repeat="line in lines track by $index">
+        <td>{{lines}}</td>
+        <!-- <td>{{country.population}}</td> -->
+      </tr>
+    </table>
+  </body>
+</html>
